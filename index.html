@@ -26,7 +26,75 @@
       overflow-x:hidden;
     }
 
+    .rsvp-form {
+      text-align: right;
+      direction: rtl;
+      max-width: 400px;
+      margin: 0 auto;
+    }
 
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .rsvp-submit-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #b08968; /* à adapter à votre palette */
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .rsvp-submit-btn:hover {
+      opacity: 0.9;
+    }
+
+    #rsvp-success {
+      text-align: center;
+      padding: 16px;
+      background: rgba(0,150,0,0.1);
+      border-radius: 8px;
+      margin-top: 12px;
+    }
     .map-containe1 .map-link:hover {
       background: #efe8db;
     }
@@ -866,8 +934,53 @@
           </div>
         </div>
 
-        <!-- Page 6 : Remerciements -->
         <div class="card-panel" id="cap6" style="opacity:0;">
+          <div class="monogram-card">
+            <div class="eyebrow-sm">تأكيد الحضور</div>
+            <div class="title">RSVP</div>
+            <div class="rule"></div>
+            <div class="sub">
+              يسعدنا تأكيدكم لحضوركم قبل الموعد
+              <br><br>
+              <form id="rsvp-form" class="rsvp-form">
+                <div class="form-group">
+                  <label for="guest-name">الاسم الكامل</label>
+                  <input type="text" id="guest-name" name="guest-name" required placeholder="اكتب اسمك هنا">
+                </div>
+
+                <div class="form-group">
+                  <label for="guest-count">عدد الأشخاص</label>
+                  <input type="number" id="guest-count" name="guest-count" min="1" max="10" required placeholder="مثال: 2">
+                </div>
+
+                <div class="form-group">
+                  <label>هل ستحضرون؟</label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="attendance" value="yes" required>
+                      <span>نعم، سنحضر ✨</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="attendance" value="no" required>
+                      <span>عذراً، لن نتمكن</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="guest-message">رسالة (اختياري)</label>
+                  <textarea id="guest-message" name="guest-message" rows="3" placeholder="اكتب رسالتك للعروسين"></textarea>
+                </div>
+
+                <button type="submit" class="rsvp-submit-btn">تأكيد الحضور</button>
+              </form>
+              <div id="rsvp-success" style="display:none;">
+                ✅ شكراً لكم! تم تأكيد حضوركم بنجاح
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-panel" id="cap7" style="opacity:0;">
           <div class="monogram-card">
             <svg viewBox="0 0 100 100">
               <path d="M20,70 Q20,20 50,20 Q80,20 80,70" fill="none" stroke="#FBF6ED" stroke-width="2.4"/>
@@ -1043,6 +1156,20 @@
   window.addEventListener('resize', adjustVideoScale);
   window.addEventListener('orientationchange', adjustVideoScale);
   adjustVideoScale();
+  document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('guest-name').value;
+    const count = document.getElementById('guest-count').value;
+    const attendance = document.querySelector('input[name="attendance"]:checked').value;
+    const message = document.getElementById('guest-message').value;
+
+    // Ici tu peux envoyer les données vers un backend, Google Sheets, EmailJS, etc.
+    console.log({ name, count, attendance, message });
+
+    this.style.display = 'none';
+    document.getElementById('rsvp-success').style.display = 'block';
+  });
 </script>
 
 </body>
